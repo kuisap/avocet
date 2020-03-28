@@ -1,0 +1,14 @@
+name: "docker_run"
+description: "docker image for console module"
+author: "poifull10"
+
+inputs:
+  run-command: # id of input
+    description: "Command to run"
+    required: true
+runs:
+  using: "Docker"
+  image: "poifull10/ros_melodic"
+  args:
+    - ${{inputs.run-command}}
+
