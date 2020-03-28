@@ -1,15 +1,15 @@
-name: build_debug
+name: console_debug
 
 on: [push]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: build
+    name: debug
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Build
+      - name: Debug
         uses: ./.github/actions/console_ros
         with:
-          run-command: ".ci/console_build_debug.sh"
+          run-command: ".ci/console_debug.sh"

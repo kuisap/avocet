@@ -10,7 +10,7 @@ project(avc_image_node)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   sensor_msgs
-  stg_msgs
+  std_msgs
 )
 
 ## System dependencies are found with CMake's conventions
