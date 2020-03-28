@@ -1,15 +1,15 @@
-name: build_release
+name: console_release
 
 on: [push]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: build
+    name: release
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Build
+      - name: Release
         uses: ./.github/actions/console_ros
         with:
-          run-command: ".ci/console_build_release.sh"
+          run-command: ".ci/console_release.sh"

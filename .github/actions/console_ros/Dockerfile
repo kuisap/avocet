@@ -11,7 +11,16 @@ RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main"
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
   ros-melodic-desktop \
+  python-rosdep \
+  python-rosinstall \
+  python-vcstools \
   && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+  git build-essential\
+  && rm -rf /var/lib/apt/lists/*
+
+RUN rosdep init && rosdep update
 
 COPY ros_entrypoint.sh /
 
