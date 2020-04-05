@@ -1,3 +1,7 @@
+agv/.catkin_workspace
+agv/build
+agv/devel
 console/.catkin_workspace
 console/build/
 console/devel/
+
