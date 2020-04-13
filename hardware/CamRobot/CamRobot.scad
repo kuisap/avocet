@@ -23,15 +23,6 @@ path_pts = [
     [5.5, 4.2]
 ];
 
-path_pts_ = [
-    [4.5, 0],
-    [-4.5, 0],
-    [-5.5, 3.3],
-    [-1, 6.5],
-    [1, 6.5],
-    [5.5, 3.3]
-];
-
 translate([0,0.9,-0.9])
     rotate([90, 0, 0])
     linear_extrude(height=1.8)
@@ -73,11 +64,7 @@ translate([5.5, 0.5, 1.45])
 body();
 
 translate([0, 4.2 ,9])
-color("blue"){
-hand();
-}
+    hand();
 
 translate([0, -4.7 ,9])
-color("blue"){
-hand();
-}
+    hand();
