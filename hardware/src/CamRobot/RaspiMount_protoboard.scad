@@ -71,10 +71,10 @@ module pm_half(protoboard_pitch_w, protoboard_pitch_h, protoboard_h, protoboard_
     
     // front poll
     translate([protoboard_pitch_w/2 - 0.5,protoboard_w + 1, 0]) 
-        cylinder(h=protoboard_h, r=0.1);
+        cylinder(h=protoboard_h + 0.1, r=0.2);
     // back poll
     translate([protoboard_pitch_w/2 - 0.5,protoboard_w + protoboard_pitch_h ,0]) 
-        cylinder(h=protoboard_h, r=0.1);
+        cylinder(h=protoboard_h + 0.1, r=0.2);
 }
 
 //args
