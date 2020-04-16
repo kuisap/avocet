@@ -10,7 +10,11 @@ module cm_half(camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, upper_ho
             cylinder(h=0.3, r=0.1);
        translate([2.45,6.4,-0.05]) 
             cylinder(h=0.3, r=0.1);
+        
+        trim_holes();
+        
     }
+    
     
     // Front-side stopper
     side_stopper();
@@ -52,6 +56,44 @@ module cm_half(camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, upper_ho
 
     }
 
+}
+
+module trim_hole(){
+     minkowski(){
+        translate([0.25, 0.5, -0.05])
+            cube([0.1, 0.5, 0.3]);
+            cylinder(r=0.1, h=0.3);   
+    }
+}
+
+module trim_hole_line(){
+    trim_hole();
+    translate([0.6, 0, 0])
+        trim_hole();
+    translate([1.2, 0, 0])
+        trim_hole();
+    translate([1.8, 0, 0])
+        trim_hole();
+    translate([2.5, 0, 0])
+        trim_hole();
+}
+
+module trim_holes(){
+    trim_hole_line();
+    translate([0, 1, 0])    
+        trim_hole_line();
+    translate([0, 2, 0])    
+        trim_hole_line();
+    translate([0, 3, 0])    
+        trim_hole_line();
+    translate([0, 4, 0])    
+        trim_hole_line();
+    translate([0, 5, 0])    
+        trim_hole_line();
+    translate([0, 6, 0])    
+        trim_hole_line();
+    translate([0, 7, 0])    
+        trim_hole_line();
 }
 
 module front_stopper(){
