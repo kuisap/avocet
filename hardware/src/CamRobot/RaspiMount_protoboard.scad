@@ -125,7 +125,7 @@ module pm_half(protoboard_pitch_w, protoboard_pitch_h, protoboard_h, protoboard_
 //  protoboard_pitch_w, protoboard_pitch_h: pitch of prototyping board holes
 //  protoboard_h: length between the raspi mount and the protoboard mount
 // protoboard_w: length between the camera mount and the protoboard mount
-module PotoboardMount(protoboard_pitch_w = 3, protoboard_pitch_h = 5, protoboard_h=2, protoboard_w=1){
+module ProtoboardMount(protoboard_pitch_w = 3, protoboard_pitch_h = 5, protoboard_h=2, protoboard_w=1){
     pm_half(protoboard_pitch_w, protoboard_pitch_h, protoboard_h, protoboard_w);
     mirror([1, 0, 0]){
         pm_half(protoboard_pitch_w, protoboard_pitch_h, protoboard_h, protoboard_w);
