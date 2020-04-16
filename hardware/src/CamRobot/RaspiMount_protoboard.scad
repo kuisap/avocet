@@ -11,22 +11,34 @@ module cm_half(camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, upper_ho
        translate([2.45,6.4,-0.05]) 
             cylinder(h=0.3, r=0.1);
     }
-    // Side Stopper
-    translate([3.05, 0, 0.2])
-    cube([0.2, 7, 0.3]);
+    
+    // Front-side stopper
+    side_stopper();
+
+    // Back-side Stopper    
+    translate([0 , 6.2, 0])
+        side_stopper();
         
     // Front Stopper
-    translate([2.85, 0, 0.2])
-        cube([0.4, 0.2, 0.3]);
+    front_stopper();
 
     //Back Stopper
-    translate([2.85, 7, 0.2])
-        cube([0.4, 0.2, 0.3]);
+    translate([0, 7, 0])
+        front_stopper();
 
     // Camera Mount
     difference(){
-        translate([0, 0, 0.2])
-            cube([(camera_hole_pitch_w+0.5)/2, 0.2,camera_hole_pitch_h+upper_hole_h+0.1]);
+        
+        translate([0, 0.2, 0.2])
+            rotate([90, 0, 0])
+            minkowski()
+            {
+                cube([(camera_hole_pitch_w )/2+0.1, camera_hole_pitch_h+upper_hole_h , 0.1]);
+                cylinder(r=0.2,h=0.1);
+            }
+        
+        //translate([0, 0, 0.2])
+           // cube([(camera_hole_pitch_w+0.5)/2, 0.2,camera_hole_pitch_h+upper_hole_h+0.1]);
         
         // Upper hole
         translate([camera_hole_pitch_w/2, 0.5, upper_hole_h])
@@ -40,6 +52,31 @@ module cm_half(camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, upper_ho
 
     }
 
+}
+
+module front_stopper(){
+    minkowski(){
+        translate([2.9, 0.1, 0.2])
+            cube([0.1, 0.1, 0.1]);
+        rotate([90, 0, 0])
+            cylinder(r=0.2, h=0.1);
+    }
+}
+
+module side_stopper(){
+    difference(){
+    translate([3.05, 0, 0.2])
+        minkowski()
+        {
+            translate([0, 0.2, 0])
+                cube([0.1, 0.6, 0.6]);
+            rotate([0, 90, 0])
+                cylinder(r=0.2,h=0.1);
+        }
+    translate([3,0.5 ,0.7]) 
+        rotate([0, 90, 0])
+        cylinder(h=0.3, r=0.1);
+    }    
 }
 
 module RaspiCameraMount(camera_hole_r=0.1, camera_hole_pitch_w=2.1, camera_hole_pitch_h=1.25, upper_hole_h=1){
@@ -59,7 +96,14 @@ module pm_half(protoboard_pitch_w, protoboard_pitch_h, protoboard_h, protoboard_
     
     translate([0, protoboard_w, protoboard_h]){
         difference(){
-            cube([protoboard_pitch_w/2+0.5, protoboard_pitch_h + 1, 0.2]);
+        translate([0, 0.35, 0]){
+            minkowski()
+            {
+                cube([protoboard_pitch_w/2+ 0.2, protoboard_pitch_h +0.2, 0.1]);
+                cylinder(r=0.3,h=0.1);
+            }
+        }
+            //cube([protoboard_pitch_w/2+0.5, protoboard_pitch_h + 1, 0.2]);
             // front hole
            translate([protoboard_pitch_w/2,0.5,-0.05]) 
                 cylinder(h=0.3, r=0.1);
