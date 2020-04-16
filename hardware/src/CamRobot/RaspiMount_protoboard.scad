@@ -1,6 +1,21 @@
 $fa = 1;
 $fs = 0.01;
 
+//args
+// num_camera: number of camera(1 or 2)
+// camera_hole_r: radius of camera hole
+// camera _hole_pitch_w: horizontal pitch of camera holes
+// camera_hole_pitch_h: vertical pitch of camera holes
+// camera_distance: distance between hole of 2 cameras. It is used  only for stereo camera mount
+// upper_hole_h: height of upper camera holes
+module RaspiCameraMount(num_camera=2, camera_hole_r=0.1, camera_hole_pitch_w=2.1, camera_hole_pitch_h=1.25, camera_distance=1,  upper_hole_h=1){
+    cm_half(num_camera, camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, camera_distance, upper_hole_h);
+    mirror([1, 0, 0]){
+    cm_half(num_camera, camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, camera_distance, upper_hole_h);
+    }
+}
+
+
 module cm_half(num_camera, camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, camera_distance, upper_hole_h){
     
     // Base
@@ -29,7 +44,7 @@ module cm_half(num_camera, camera_hole_r, camera_hole_pitch_w, camera_hole_pitch
     if(num_camera==1){
         camera_mount(camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, upper_hole_h);
     } else {
-        translate([camera_hole_pitch_w/2 +  camera_distance, 0, 0]){
+        translate([camera_hole_pitch_w/2 +  camera_distance/2, 0, 0]){
             camera_mount(camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, upper_hole_h);
             mirror([1, 0, 0]){            
                 camera_mount(camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, upper_hole_h);
@@ -92,18 +107,17 @@ module camera_mount(camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, upp
     
 }
 
-module RaspiCameraMount(num_camera=2, camera_hole_r=0.1, camera_hole_pitch_w=2.1, camera_hole_pitch_h=1.25, camera_distance=0.5,  upper_hole_h=1){
-    cm_half(num_camera, camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, camera_distance, upper_hole_h);
+
+//args
+//  protoboard_pitch_w, protoboard_pitch_h: pitch of prototyping board holes
+//  protoboard_h: length between the raspi mount and the protoboard mount
+// protoboard_w: length between the camera mount and the protoboard mount
+module ProtoboardMount(protoboard_pitch_w = 3, protoboard_pitch_h = 5, protoboard_h=2, protoboard_w=1){
+    pm_half(protoboard_pitch_w, protoboard_pitch_h, protoboard_h, protoboard_w);
     mirror([1, 0, 0]){
-    cm_half(num_camera, camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, camera_distance, upper_hole_h);
+        pm_half(protoboard_pitch_w, protoboard_pitch_h, protoboard_h, protoboard_w);
     }
 }
-
-//args: camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, upper_hole_h
-RaspiCameraMount();
-
-
-
 
 module pm_half(protoboard_pitch_w, protoboard_pitch_h, protoboard_h, protoboard_w){
     
@@ -134,15 +148,23 @@ module pm_half(protoboard_pitch_w, protoboard_pitch_h, protoboard_h, protoboard_
         cylinder(h=protoboard_h + 0.1, r=0.2);
 }
 
+
+
+// Generate
+
+//args
+// num_camera: number of camera(1 or 2)
+// camera_hole_r: radius of camera hole
+// camera _hole_pitch_w: horizontal pitch of camera holes
+// camera_hole_pitch_h: vertical pitch of camera holes
+// camera_distance: distance between hole of 2 cameras. It is used  only for stereo camera mount
+// upper_hole_h: height of upper camera holes
+RaspiCameraMount();
+
 //args
 //  protoboard_pitch_w, protoboard_pitch_h: pitch of prototyping board holes
 //  protoboard_h: length between the raspi mount and the protoboard mount
 // protoboard_w: length between the camera mount and the protoboard mount
-module ProtoboardMount(protoboard_pitch_w = 3, protoboard_pitch_h = 5, protoboard_h=2, protoboard_w=1){
-    pm_half(protoboard_pitch_w, protoboard_pitch_h, protoboard_h, protoboard_w);
-    mirror([1, 0, 0]){
-        pm_half(protoboard_pitch_w, protoboard_pitch_h, protoboard_h, protoboard_w);
-    }
-}
-
 ProtoboardMount();
+
+
