@@ -90,8 +90,6 @@ module camera_mount(camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, upp
                 cylinder(r=0.2,h=0.1);
             }
         
-        //translate([0, 0, 0.2])
-           // cube([(camera_hole_pitch_w+0.5)/2, 0.2,camera_hole_pitch_h+upper_hole_h+0.1]);
         
         // Upper hole
         translate([camera_hole_pitch_w/2, 0.5, upper_hole_h])
@@ -166,5 +164,4 @@ RaspiCameraMount();
 //  protoboard_h: length between the raspi mount and the protoboard mount
 // protoboard_w: length between the camera mount and the protoboard mount
 ProtoboardMount();
-
 
