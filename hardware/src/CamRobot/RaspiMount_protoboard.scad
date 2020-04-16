@@ -2,21 +2,21 @@ $fa = 1;
 $fs = 0.01;
 
 //args
-// num_camera: number of camera(1 or 2)
+// stereo_camera: true:stereo camera mount, false:single camera mount
 // camera_hole_r: radius of camera hole
 // camera _hole_pitch_w: horizontal pitch of camera holes
 // camera_hole_pitch_h: vertical pitch of camera holes
 // camera_distance: distance between hole of 2 cameras. It is used  only for stereo camera mount
 // upper_hole_h: height of upper camera holes
-module RaspiCameraMount(num_camera=2, camera_hole_r=0.1, camera_hole_pitch_w=2.1, camera_hole_pitch_h=1.25, camera_distance=1,  upper_hole_h=1){
-    cm_half(num_camera, camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, camera_distance, upper_hole_h);
+module RaspiCameraMount(stereo_camera=true, camera_hole_r=0.1, camera_hole_pitch_w=2.1, camera_hole_pitch_h=1.25, camera_distance=1,  upper_hole_h=1){
+    cm_half(stereo_camera, camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, camera_distance, upper_hole_h);
     mirror([1, 0, 0]){
-    cm_half(num_camera, camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, camera_distance, upper_hole_h);
+    cm_half(stereo_camera, camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, camera_distance, upper_hole_h);
     }
 }
 
 
-module cm_half(num_camera, camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, camera_distance, upper_hole_h){
+module cm_half(stereo_camera, camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, camera_distance, upper_hole_h){
     
     // Base
     difference(){
@@ -41,7 +41,7 @@ module cm_half(num_camera, camera_hole_r, camera_hole_pitch_w, camera_hole_pitch
     translate([0, 7, 0])
         front_stopper();
     
-    if(num_camera==1){
+    if(stereo_camera==false){
         camera_mount(camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, upper_hole_h);
     } else {
         translate([camera_hole_pitch_w/2 +  camera_distance/2, 0, 0]){
@@ -151,7 +151,7 @@ module pm_half(protoboard_pitch_w, protoboard_pitch_h, protoboard_h, protoboard_
 // Generate
 
 //args
-// num_camera: number of camera(1 or 2)
+// stereo_camera: true:stereo camera mount, false:single camera mount
 // camera_hole_r: radius of camera hole
 // camera _hole_pitch_w: horizontal pitch of camera holes
 // camera_hole_pitch_h: vertical pitch of camera holes
