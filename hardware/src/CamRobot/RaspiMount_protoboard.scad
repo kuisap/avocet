@@ -1,7 +1,7 @@
 $fa = 1;
 $fs = 0.01;
 
-module cm_half(camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, upper_hole_h){
+module cm_half(num_camera, camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, camera_distance, upper_hole_h){
     
     // Base
     difference(){
@@ -25,33 +25,17 @@ module cm_half(camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, upper_ho
     //Back Stopper
     translate([0, 7, 0])
         front_stopper();
-
-    // Camera Mount
-    difference(){
-        
-        translate([0, 0.2, 0.2])
-            rotate([90, 0, 0])
-            minkowski()
-            {
-                cube([(camera_hole_pitch_w )/2+0.1, camera_hole_pitch_h+upper_hole_h , 0.1]);
-                cylinder(r=0.2,h=0.1);
+    
+    if(num_camera==1){
+        camera_mount(camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, upper_hole_h);
+    } else {
+        translate([camera_hole_pitch_w/2 +  camera_distance, 0, 0]){
+            camera_mount(camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, upper_hole_h);
+            mirror([1, 0, 0]){            
+                camera_mount(camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, upper_hole_h);
             }
-        
-        //translate([0, 0, 0.2])
-           // cube([(camera_hole_pitch_w+0.5)/2, 0.2,camera_hole_pitch_h+upper_hole_h+0.1]);
-        
-        // Upper hole
-        translate([camera_hole_pitch_w/2, 0.5, upper_hole_h])
-            rotate([90, 0, 0])
-            cylinder(h=1, r=camera_hole_r);
-
-        // Lower hole
-        translate([camera_hole_pitch_w/2, 0.5, upper_hole_h + camera_hole_pitch_h])
-            rotate([90, 0, 0])
-            cylinder(h=1, r=camera_hole_r);
-
+        }   
     }
-
 }
 
 module front_stopper(){
@@ -79,10 +63,39 @@ module side_stopper(){
     }    
 }
 
-module RaspiCameraMount(camera_hole_r=0.1, camera_hole_pitch_w=2.1, camera_hole_pitch_h=1.25, upper_hole_h=1){
-    cm_half(camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, upper_hole_h);
+module camera_mount(camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, upper_hole_h){
+    // Camera Mount
+    difference(){
+        
+        translate([0, 0.2, 0.2])
+            rotate([90, 0, 0])
+            minkowski()
+            {
+                cube([(camera_hole_pitch_w )/2+0.1, camera_hole_pitch_h+upper_hole_h , 0.1]);
+                cylinder(r=0.2,h=0.1);
+            }
+        
+        //translate([0, 0, 0.2])
+           // cube([(camera_hole_pitch_w+0.5)/2, 0.2,camera_hole_pitch_h+upper_hole_h+0.1]);
+        
+        // Upper hole
+        translate([camera_hole_pitch_w/2, 0.5, upper_hole_h])
+            rotate([90, 0, 0])
+            cylinder(h=1, r=camera_hole_r);
+
+        // Lower hole
+        translate([camera_hole_pitch_w/2, 0.5, upper_hole_h + camera_hole_pitch_h])
+            rotate([90, 0, 0])
+            cylinder(h=1, r=camera_hole_r);
+
+    }    
+    
+}
+
+module RaspiCameraMount(num_camera=2, camera_hole_r=0.1, camera_hole_pitch_w=2.1, camera_hole_pitch_h=1.25, camera_distance=0.5,  upper_hole_h=1){
+    cm_half(num_camera, camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, camera_distance, upper_hole_h);
     mirror([1, 0, 0]){
-    cm_half(camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, upper_hole_h);
+    cm_half(num_camera, camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, camera_distance, upper_hole_h);
     }
 }
 
