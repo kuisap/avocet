@@ -132,4 +132,4 @@ module PotoboardMount(protoboard_pitch_w = 3, protoboard_pitch_h = 5, protoboard
     }
 }
 
-PotoboardMount();
+ProtoboardMount();
