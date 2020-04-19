@@ -1,0 +1,13 @@
+<robot name="avocet">
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://avocet_urdf/src/CamRobot.stl" />
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <material name="red">
+        <color rgba="0.0 1.0 0.3 2.0"/>
+      </material>
+    </visual>
+  </link>
+</robot>
