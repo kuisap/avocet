@@ -1,5 +1,6 @@
 epsilon = 0.001;
 $fn = 100;
+debug_shaft=false;
 
 module halfCylinder(height, r) {
     mirror([0, 1, 0])
@@ -32,5 +33,11 @@ module halfShaft(height, outerR, centerR, wireR, centerFn=6) {
     }
 }
 
-color("red") 
-    halfShaft(height=100, outerR=15, centerR=2.3, wireR=3.5);
+if (debug_shaft) {
+    color("red") 
+        union() {
+            halfShaft(height=100, outerR=15, centerR=2.3, wireR=3.5);
+            mirror([0, 1, 0])
+                halfShaft(height=100, outerR=15, centerR=2.3, wireR=3.5);
+        }
+}
