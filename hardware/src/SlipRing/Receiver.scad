@@ -1,7 +1,7 @@
 include <Shaft.scad>;
 include <Util.scad>;
 
-debug_receiver = true;
+debug_receiver = false;
 
 module receiver (width, height, depth, pitch, r) {
     T = width/4;
