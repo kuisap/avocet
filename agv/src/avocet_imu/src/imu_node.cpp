@@ -63,6 +63,7 @@ int main(int argc, char **argv) {
             msg.linear_acceleration_covariance[8] = 1;
 
     pub.publish(std::move(msg));
+
     ros::spinOnce();
     loop_rate.sleep();
   }
