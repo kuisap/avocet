@@ -22,6 +22,7 @@ module cm_half(stereo_camera, camera_hole_r, camera_hole_pitch_w, camera_hole_pi
         cube([3.75, 8.7, 0.2]);   
        translate([2.45,0.6,-0.05]) 
             cylinder(h=0.3, r=0.1);
+       // tapped hole
        translate([2.45,6.4,-0.05]) 
             cylinder(h=0.3, r=0.1);
         
@@ -116,7 +117,8 @@ module side_stopper(){
             rotate([0, 90, 0])
                 cylinder(r=0.2,h=0.1);
         }
-    translate([3,0.5 ,0.7]) 
+    // tapped hole
+    translate([3.5,0.5 ,0.7]) 
         rotate([0, 90, 0])
         cylinder(h=0.3, r=0.1);
     }    
