@@ -11,6 +11,7 @@ module cm_half(camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, upper_ho
        translate([2.45,6.4,-0.05]) 
             cylinder(h=0.3, r=0.1);
         
+        // Make holes on Raspi mount
         trim_holes();
         
     }
@@ -128,38 +129,47 @@ module RaspiCameraMount(camera_hole_r=0.1, camera_hole_pitch_w=2.1, camera_hole_
     }
 }
 
-//args: camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, upper_hole_h
-RaspiCameraMount();
-
-
 
 
 module pm_half(protoboard_pitch_w, protoboard_pitch_h, protoboard_h, protoboard_w){
     
     translate([0, protoboard_w, protoboard_h]){
         difference(){
-        translate([0, 0.35, 0]){
+
+        translate([1.2, 0.4, 0]){
             minkowski()
             {
-                cube([protoboard_pitch_w/2+ 0.2, protoboard_pitch_h +0.2, 0.1]);
-                cylinder(r=0.3,h=0.1);
+                cube([0.4, 0.4, , 0.1]);
+                cylinder(r=0.2,h=0.1);
             }
         }
             //cube([protoboard_pitch_w/2+0.5, protoboard_pitch_h + 1, 0.2]);
             // front hole
            translate([protoboard_pitch_w/2,0.5,-0.05]) 
                 cylinder(h=0.3, r=0.1);
-            // back hole
+         }
+        
+         difference(){
+
+        translate([1.2, 0.2+ protoboard_pitch_h , 0]){
+            minkowski()
+            {
+                cube([0.4, 0.4, , 0.1]);
+                cylinder(r=0.2,h=0.1);
+            }
+        }
+            //cube([protoboard_pitch_w/2+0.5, protoboard_pitch_h + 1, 0.2]);
+             // back hole
            translate([protoboard_pitch_w/2,protoboard_pitch_h + 0.5,-0.05]) 
                 cylinder(h=0.3, r=0.1);
-        }
+         }
     }
     
     // front poll
-    translate([protoboard_pitch_w/2 - 0.5,protoboard_w + 1, 0]) 
+    translate([protoboard_pitch_w/2 - 0.3,protoboard_w + 0.8, 0]) 
         cylinder(h=protoboard_h + 0.1, r=0.2);
     // back poll
-    translate([protoboard_pitch_w/2 - 0.5,protoboard_w + protoboard_pitch_h ,0]) 
+    translate([protoboard_pitch_w/2 - 0.3,protoboard_w  + 0.2+ protoboard_pitch_h ,0]) 
         cylinder(h=protoboard_h + 0.1, r=0.2);
 }
 
@@ -167,11 +177,16 @@ module pm_half(protoboard_pitch_w, protoboard_pitch_h, protoboard_h, protoboard_
 //  protoboard_pitch_w, protoboard_pitch_h: pitch of prototyping board holes
 //  protoboard_h: length between the raspi mount and the protoboard mount
 // protoboard_w: length between the camera mount and the protoboard mount
-module ProtoboardMount(protoboard_pitch_w = 3, protoboard_pitch_h = 5, protoboard_h=2, protoboard_w=1){
+module ProtoboardMount(protoboard_pitch_w = 3, protoboard_pitch_h = 5, protoboard_h=1, protoboard_w=1){
     pm_half(protoboard_pitch_w, protoboard_pitch_h, protoboard_h, protoboard_w);
     mirror([1, 0, 0]){
         pm_half(protoboard_pitch_w, protoboard_pitch_h, protoboard_h, protoboard_w);
     }
 }
 
+//args: camera_hole_r=0.1, camera_hole_pitch_w=2.1, camera_hole_pitch_h=1.25, upper_hole_h=1
+RaspiCameraMount();
+
+// args: protoboard_pitch_w = 3, protoboard_pitch_h = 5, protoboard_h=2, protoboard_w=1
 ProtoboardMount();
+
