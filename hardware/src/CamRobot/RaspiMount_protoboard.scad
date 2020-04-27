@@ -3,9 +3,9 @@ $fs = 0.01;
 
 module cm_half(camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, upper_hole_h){
     
-    // Base
+    // Base of Raspi Mount
     difference(){
-        cube([3.25, 8.7, 0.2]);   
+        cube([3.75, 8.7, 0.2]);   
        translate([2.45,0.6,-0.05]) 
             cylinder(h=0.3, r=0.1);
        translate([2.45,6.4,-0.05]) 
@@ -15,7 +15,6 @@ module cm_half(camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, upper_ho
         trim_holes();
         
     }
-    
     
     // Front-side stopper
     side_stopper();
@@ -69,7 +68,7 @@ module trim_hole(){
 
 module trim_hole_line(){
     trim_hole();
-    translate([0.6, 0, 0])
+    translate([0.7, 0, 0])
         trim_hole();
     translate([1.2, 0, 0])
         trim_hole();
@@ -99,7 +98,7 @@ module trim_holes(){
 
 module front_stopper(){
     minkowski(){
-        translate([2.9, 0.1, 0.2])
+        translate([3.4, 0.1, 0.2])
             cube([0.1, 0.1, 0.1]);
         rotate([90, 0, 0])
             cylinder(r=0.2, h=0.1);
@@ -108,7 +107,7 @@ module front_stopper(){
 
 module side_stopper(){
     difference(){
-    translate([3.05, 0, 0.2])
+    translate([3.55, 0, 0.2])
         minkowski()
         {
             translate([0, 0.2, 0])
@@ -133,51 +132,44 @@ module RaspiCameraMount(camera_hole_r=0.1, camera_hole_pitch_w=2.1, camera_hole_
 
 module pm_half(protoboard_pitch_w, protoboard_pitch_h, protoboard_h, protoboard_w){
     
-    translate([0, protoboard_w, protoboard_h]){
-        difference(){
-
-        translate([1.2, 0.4, 0]){
-            minkowski()
-            {
-                cube([0.4, 0.4, , 0.1]);
-                cylinder(r=0.2,h=0.1);
-            }
+    translate([0, protoboard_pitch_h/2 + protoboard_w, 0]){
+        front_pb_mount(protoboard_pitch_w, protoboard_pitch_h, protoboard_h);
+        mirror([0, 1, 0]){
+            front_pb_mount(protoboard_pitch_w, protoboard_pitch_h, protoboard_h);
         }
-            //cube([protoboard_pitch_w/2+0.5, protoboard_pitch_h + 1, 0.2]);
-            // front hole
-           translate([protoboard_pitch_w/2,0.5,-0.05]) 
-                cylinder(h=0.3, r=0.1);
-         }
-        
-         difference(){
-
-        translate([1.2, 0.2+ protoboard_pitch_h , 0]){
-            minkowski()
-            {
-                cube([0.4, 0.4, , 0.1]);
-                cylinder(r=0.2,h=0.1);
-            }
-        }
-            //cube([protoboard_pitch_w/2+0.5, protoboard_pitch_h + 1, 0.2]);
-             // back hole
-           translate([protoboard_pitch_w/2,protoboard_pitch_h + 0.5,-0.05]) 
-                cylinder(h=0.3, r=0.1);
-         }
     }
-    
-    // front poll
-    translate([protoboard_pitch_w/2 - 0.3,protoboard_w + 0.8, 0]) 
-        cylinder(h=protoboard_h + 0.1, r=0.2);
-    // back poll
-    translate([protoboard_pitch_w/2 - 0.3,protoboard_w  + 0.2+ protoboard_pitch_h ,0]) 
-        cylinder(h=protoboard_h + 0.1, r=0.2);
+}
+
+module front_pb_mount(protoboard_pitch_w, protoboard_pitch_h, protoboard_h){
+    // set of front pole and mount
+    translate([protoboard_pitch_w/2, - protoboard_pitch_h/2, 0]){
+            translate([0, 0, protoboard_h]){
+                difference(){
+
+                    translate([-0.3, -0.1, 0]){
+                        minkowski()
+                        {
+                            cube([0.4, 0.4, , 0.1]);
+                            cylinder(r=0.2,h=0.1);
+                        }
+                    }
+                        //cube([protoboard_pitch_w/2+0.5, protoboard_pitch_h + 1, 0.2]);
+                        // front hole
+                       translate([0,0,-0.05]) 
+                            cylinder(h=0.3, r=0.1);
+                     }
+             }
+         // front poll
+        translate([ -0.3, 0.3, 0]) 
+            cylinder(h=protoboard_h + 0.1, r=0.2);
+     }
 }
 
 //args
 //  protoboard_pitch_w, protoboard_pitch_h: pitch of prototyping board holes
 //  protoboard_h: length between the raspi mount and the protoboard mount
 // protoboard_w: length between the camera mount and the protoboard mount
-module ProtoboardMount(protoboard_pitch_w = 3, protoboard_pitch_h = 5, protoboard_h=1, protoboard_w=1){
+module ProtoboardMount(protoboard_pitch_w = 4.1, protoboard_pitch_h = 6.6, protoboard_h=1, protoboard_w=1){
     pm_half(protoboard_pitch_w, protoboard_pitch_h, protoboard_h, protoboard_w);
     mirror([1, 0, 0]){
         pm_half(protoboard_pitch_w, protoboard_pitch_h, protoboard_h, protoboard_w);
