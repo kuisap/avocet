@@ -8,14 +8,14 @@ $fs = 0.01;
 // camera_hole_pitch_h: vertical pitch of camera holes
 // camera_distance: distance between hole of 2 cameras. It is used  only for stereo camera mount
 // upper_hole_h: height of upper camera holes
-module RaspiCameraMount(stereo_camera=true, camera_hole_r=0.1, camera_hole_pitch_w=2.1, camera_hole_pitch_h=1.25, camera_distance=1,  upper_hole_h=1){
-    cm_half(stereo_camera, camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, camera_distance, upper_hole_h);
+module RaspiCameraMount(stereo_camera=false, camera_hole_r=0.1, camera_hole_pitch_w=2.1, camera_hole_pitch_h=1.25, camera_distance=1,  upper_hole_h=1, trim=true){
+    cm_half(stereo_camera, camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, camera_distance, upper_hole_h, trim);
     mirror([1, 0, 0]){
-    cm_half(stereo_camera, camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, camera_distance, upper_hole_h);
+    cm_half(stereo_camera, camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, camera_distance, upper_hole_h, trim);
     }
 }
 
-module cm_half(stereo_camera, camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, upper_hole_h, trim){
+module cm_half(stereo_camera, camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, camera_distance, upper_hole_h, trim){
     
     // Base of Raspi Mount
     difference(){
@@ -199,7 +199,7 @@ module front_pb_mount(protoboard_pitch_w, protoboard_pitch_h, protoboard_h){
 
 // Generate
 
-//args: stereo_camera=true, camera_hole_r=0.1, camera_hole_pitch_w=2.1, camera_hole_pitch_h=1.25, camera_distance=1,  upper_hole_h=1
+//args: stereo_camera=false, camera_hole_r=0.1, camera_hole_pitch_w=2.1, camera_hole_pitch_h=1.25, camera_distance=1,  upper_hole_h=1, trim=true
 RaspiCameraMount();
 
 // args: protoboard_pitch_w = 3, protoboard_pitch_h = 5, protoboard_h=2, protoboard_w=1
