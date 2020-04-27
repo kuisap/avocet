@@ -15,8 +15,7 @@ module RaspiCameraMount(stereo_camera=true, camera_hole_r=0.1, camera_hole_pitch
     }
 }
 
-
-module cm_half(stereo_camera, camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, camera_distance, upper_hole_h){
+module cm_half(stereo_camera, camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, upper_hole_h, trim){
     
     // Base of Raspi Mount
     difference(){
@@ -27,8 +26,9 @@ module cm_half(stereo_camera, camera_hole_r, camera_hole_pitch_w, camera_hole_pi
             cylinder(h=0.3, r=0.1);
         
         // Make holes on Raspi mount
-        trim_holes();
-        
+        if(trim){
+            trim_holes();
+        }
     }
     
     // Front-side stopper
@@ -119,6 +119,7 @@ module side_stopper(){
         cylinder(h=0.3, r=0.1);
     }    
 }
+
 
 module camera_mount(camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, upper_hole_h){
     // Camera Mount
