@@ -95,6 +95,8 @@ module trim_holes(){
         trim_hole_line();
 }
 
+
+
 module front_stopper(){
     minkowski(){
         translate([3.4, 0.1, 0.2])
@@ -145,21 +147,13 @@ module camera_mount(camera_hole_r, camera_hole_pitch_w, camera_hole_pitch_h, upp
             rotate([90, 0, 0])
             cylinder(h=1, r=camera_hole_r);
 
-    }    
-    
-}
-
-//args
-//  protoboard_pitch_w, protoboard_pitch_h: pitch of prototyping board holes
-//  protoboard_h: length between the raspi mount and the protoboard mount
-// protoboard_w: length between the camera mount and the protoboard mount
-module ProtoboardMount(protoboard_pitch_w = 3, protoboard_pitch_h = 5, protoboard_h=2, protoboard_w=1){
-    pm_half(protoboard_pitch_w, protoboard_pitch_h, protoboard_h, protoboard_w);
-    mirror([1, 0, 0]){
-        pm_half(protoboard_pitch_w, protoboard_pitch_h, protoboard_h, protoboard_w);
     }
-}
+}    
+    
 
+
+
+// Mount of Prototyping board
 module pm_half(protoboard_pitch_w, protoboard_pitch_h, protoboard_h, protoboard_w){
     
     translate([0, protoboard_pitch_h/2 + protoboard_w, 0]){
@@ -194,6 +188,18 @@ module front_pb_mount(protoboard_pitch_w, protoboard_pitch_h, protoboard_h){
             cylinder(h=protoboard_h + 0.1, r=0.2);
      }
 }
+
+//args
+//  protoboard_pitch_w, protoboard_pitch_h: pitch of prototyping board holes
+//  protoboard_h: length between the raspi mount and the protoboard mount
+// protoboard_w: length between the camera mount and the protoboard mount
+module ProtoboardMount(protoboard_pitch_w = 4.1, protoboard_pitch_h = 6.6, protoboard_h=1, protoboard_w=1){
+    pm_half(protoboard_pitch_w, protoboard_pitch_h, protoboard_h, protoboard_w);
+    mirror([1, 0, 0]){
+        pm_half(protoboard_pitch_w, protoboard_pitch_h, protoboard_h, protoboard_w);
+    }
+}
+
 
 
 
