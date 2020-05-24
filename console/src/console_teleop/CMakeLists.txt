@@ -30,16 +30,14 @@ catkin_package(
 ## Build ##
 ###########
 
-include_directories(
-  include
-  ${catkin_INCLUDE_DIRS}
-)
 
 # Declare a C++ library
 add_library(${PROJECT_NAME}
   src/console_teleop.cpp
 )
+
+target_include_directories(${PROJECT_NAME} PUBLIC include ${catkin_INCLUDE_DIRS} catkin)
+
 ## Declare a C++ executable
 add_executable(${PROJECT_NAME}_node src/main.cpp)
-target_link_libraries(${PROJECT_NAME}_node ${PROJECT_NAME})
-
+target_link_libraries(${PROJECT_NAME}_node ${PROJECT_NAME} ${catkin_LIBRARIES})

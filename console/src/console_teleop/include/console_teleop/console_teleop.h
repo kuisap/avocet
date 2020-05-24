@@ -7,14 +7,15 @@
 
 namespace avc
 {
-  enum class SimpleTireOperation{
+  enum class SimpleTireOperation
+  {
     FORWARD, STOP, BACKWARD
   };
 
   struct BiWheelCommand
   {
-    SimpleTireOperation leftWheel;
-    SimpleTireOperation rightWheel;
+    SimpleTireOperation leftWheel = SimpleTireOperation::STOP;
+    SimpleTireOperation rightWheel = SimpleTireOperation::STOP;
   };
 
   class TeleOperatorNode

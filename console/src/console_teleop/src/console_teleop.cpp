@@ -1,4 +1,5 @@
 #include "console_teleop/console_teleop.h"
+#include <vector>
 
 
 namespace avc
@@ -12,6 +13,7 @@ namespace avc
   void TeleOperatorNode::setCommand(const BiWheelCommand &command)
   {
     sensor_msgs::Joy joy;
+    joy.buttons = std::vector<int>(8);
     joy.buttons[4] = joy.buttons[5] = joy.buttons[6] = joy.buttons[7] = 0;
 
     {
@@ -33,7 +35,6 @@ namespace avc
           break;
       }
     }
-
     joy_ = std::move(joy);
   }
 
