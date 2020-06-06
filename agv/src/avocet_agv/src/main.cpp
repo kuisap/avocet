@@ -8,34 +8,31 @@
 #include <vector>
 
 int main(int argc, char** argv) {
-  // image_node
+  int width = 300, height = 300;
+  float fps = 30;
+  std::string publishTopic = "camera/image";
+  std::string config_str = "./src/avocet_agv/config/config.yaml";
+
+  ros::init(argc, argv, "image_publisher");
+  ros::NodeHandle nh("~");
+  nh.getParam("config", config_str);
+
   {
-    int width = 300, height = 300;
-    float fps = 30;
-    std::string publishTopic = "camera/image";
-    std::string config_str = "./src/avocet_agv/config/config.yaml";
+    YAML::Node config = YAML::LoadFile(config_str);
+    if (config["image"]["width"]) {
+      width = config["image"]["width"].as<int>();
+    }
 
-    ros::init(argc, argv, "image_publisher");
-    ros::NodeHandle nh("~");
-    nh.getParam("config", config_str);
+    if (config["image"]["height"]) {
+      height = config["image"]["height"].as<int>();
+    }
 
-    {
-      YAML::Node config = YAML::LoadFile(config_str);
-      if (config["image"]["width"]) {
-        width = config["image"]["width"].as<int>();
-      }
+    if (config["image"]["fps"]) {
+      fps = config["image"]["fps"].as<float>();
+    }
 
-      if (config["image"]["height"]) {
-        height = config["image"]["height"].as<int>();
-      }
-
-      if (config["image"]["fps"]) {
-        fps = config["image"]["fps"].as<float>();
-      }
-
-      if (config["image"]["publishTopic"]) {
-        publishTopic = config["image"]["publishTopic"].as<std::string>();
-      }
+    if (config["image"]["publishTopic"]) {
+      publishTopic = config["image"]["publishTopic"].as<std::string>();
     }
 
     image_transport::ImageTransport it(nh);
