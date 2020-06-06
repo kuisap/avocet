@@ -8,8 +8,7 @@
 #include <string>
 
 
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv){
   // image_node
   {
     int width = 300, height = 300;

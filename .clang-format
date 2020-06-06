@@ -4,7 +4,6 @@ AlignEscapedNewlinesLeft: true
 AlignConsecutiveAssignments: false
 AlignEscapedNewlinesLeft: true
 AlignTrailingComments: true
-AllowShortBlocksOnASingleLine: true
 AllowShortCaseLabelsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: 'Inline'
 AllowShortIfStatementsOnASingleLine: false
