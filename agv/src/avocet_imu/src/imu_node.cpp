@@ -4,6 +4,7 @@
 #include <vector>
 #include <chrono>
 
+#include <yaml-cpp/yaml.h>
 #include <avocet_imu/imu_capture.h>
 
 namespace {
@@ -18,11 +19,29 @@ void showIMU(const avc::IMUData &data) {
 
 int main(int argc, char **argv) {
   float fps = 100;
+  std::string frame_id = "base_link";
   std::string publishTopic = "/imu";
+  std::string config_str = "./src/avocet_imu/config/config.yaml";
+
   ros::init(argc, argv, "avocet_imu");
   ros::NodeHandle nh("~");
-  nh.getParam("fps", fps);
-  nh.getParam("publish_topic", publishTopic);
+  nh.getParam("config_str", config_str);
+
+  {
+    YAML::Node config = YAML::LoadFile(config_str);
+    if (config["fps"]) {
+      fps = config["fps"].as<float>();
+    }
+
+    if (config["publishTopic"]) {
+      publishTopic = config["publishTopic"].as<std::string>();
+    }
+
+    if (config["frame_id"]) {
+      frame_id = config["frame_id"].as<std::string>();
+    }
+  }
+
   avc::IMUCapture imu;
   ros::Publisher pub = nh.advertise<sensor_msgs::Imu>(publishTopic, 1);
 
@@ -34,7 +53,7 @@ int main(int argc, char **argv) {
     {
       auto header = std_msgs::Header();
       header.stamp = ros::Time::now();
-      header.frame_id = "base_link";
+      header.frame_id = frame_id;
       msg.header = std::move(header);
     }
 
