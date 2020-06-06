@@ -23,7 +23,7 @@ include_directories(
 
 add_subdirectory(../third_party/yaml-cpp third_party)
 
-add_executable(${PROJECT_NAME}_node src/image_node.cpp)
+add_executable(${PROJECT_NAME}_node src/main.cpp)
 
 if (BUILD_IMU)
   add_library(imu src/imu_capture.cpp)
