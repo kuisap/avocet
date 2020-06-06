@@ -1,0 +1,3 @@
+[submodule "agv/src/third_party/yaml-cpp"]
+	path = agv/src/third_party/yaml-cpp
+	url = https://github.com/jbeder/yaml-cpp.git

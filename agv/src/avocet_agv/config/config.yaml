@@ -1,0 +1,4 @@
+width: 300
+height: 300
+fps: 30
+publishTopic: "camera/image"
