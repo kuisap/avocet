@@ -1,4 +1,10 @@
-width: 300
-height: 300
-fps: 30
-publishTopic: "camera/image"
+image:
+  width: 300
+  height: 300
+  fps: 30
+  publishTopic: "camera/image"
+
+imu:
+  fps: 100
+  publishTopic: "/imu"
+  frame_id: "base_link"

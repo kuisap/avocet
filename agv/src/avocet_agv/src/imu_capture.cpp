@@ -1,4 +1,4 @@
-#include <avocet_imu/imu_capture.h>
+#include <imu_capture.h>
 
 #include <bitset>
 #include <iostream>

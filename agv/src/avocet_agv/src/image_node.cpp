@@ -22,21 +22,21 @@ int main(int argc, char** argv)
 
   {
     YAML::Node config = YAML::LoadFile(config_str);
-    if (config["width"]) {
-      width = config["width"].as<int>();
+    if (config["image"]["width"]) {
+      width = config["image"]["width"].as<int>();
     }
 
-    if (config["height"]) {
-      height = config["height"].as<int>();
+    if (config["image"]["height"]) {
+      height = config["image"]["height"].as<int>();
     }
 
-    if (config["fps"]) {
-      fps = config["fps"].as<float>();
+    if (config["image"]["fps"]) {
+      fps = config["image"]["fps"].as<float>();
     }
 
 
-    if (config["publishTopic"]) {
-      publishTopic = config["publishTopic"].as<std::string>();
+    if (config["image"]["publishTopic"]) {
+      publishTopic = config["image"]["publishTopic"].as<std::string>();
     }
   }
 

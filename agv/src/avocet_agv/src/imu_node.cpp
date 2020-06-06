@@ -5,7 +5,7 @@
 #include <chrono>
 
 #include <yaml-cpp/yaml.h>
-#include <avocet_imu/imu_capture.h>
+#include <imu_capture.h>
 
 namespace {
 void showIMU(const avc::IMUData &data) {
@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
   float fps = 100;
   std::string frame_id = "base_link";
   std::string publishTopic = "/imu";
-  std::string config_str = "./src/avocet_imu/config/config.yaml";
+  std::string config_str = "./src/avocet_agv/config/config.yaml";
 
   ros::init(argc, argv, "avocet_imu");
   ros::NodeHandle nh("~");
@@ -29,16 +29,16 @@ int main(int argc, char **argv) {
 
   {
     YAML::Node config = YAML::LoadFile(config_str);
-    if (config["fps"]) {
-      fps = config["fps"].as<float>();
+    if (config["imu"]["fps"]) {
+      fps = config["imu"]["fps"].as<float>();
     }
 
-    if (config["publishTopic"]) {
-      publishTopic = config["publishTopic"].as<std::string>();
+    if (config["imu"]["publishTopic"]) {
+      publishTopic = config["imu"]["publishTopic"].as<std::string>();
     }
 
-    if (config["frame_id"]) {
-      frame_id = config["frame_id"].as<std::string>();
+    if (config["imu"]["frame_id"]) {
+      frame_id = config["imu"]["frame_id"].as<std::string>();
     }
   }
 
