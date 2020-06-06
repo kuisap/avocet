@@ -2,19 +2,42 @@
 #include <wiringPi.h>
 #include "driver_controllers.h"
 #include <sensor_msgs/Joy.h>
+#include <yaml-cpp/yaml.h>
 
 class MotorDriveNode
 {
 public:
-  MotorDriveNode()
-  {
+  MotorDriveNode() {
 
     int vcc = 21, a1 = 27, a2 = 22, b1 = 23, b2 = 24;
-    nh_.getParam("vcc", vcc);
-    nh_.getParam("a1", a1);
-    nh_.getParam("a2", a2);
-    nh_.getParam("b1", b1);
-    nh_.getParam("b2", b2);
+    std::string config_str = "./src/drive_controllers/config/config.yaml";
+    nh_.getParam("config_str", config_str);
+
+    {
+      YAML::Node config = YAML::LoadFile(config_str);
+      if (config["vcc"]) {
+        vcc = config["vcc"].as<int>();
+      }
+
+      if (config["a1"]) {
+        a1 = config["a1"].as<int>();
+      }
+
+      if (config["a2"]) {
+        a2 = config["a2"].as<int>();
+      }
+
+      if (config["b1"]) {
+        b1 = config["b1"].as<int>();
+      }
+
+      if (config["b2"]) {
+        b2 = config["b2"].as<int>();
+      }
+    }
+
+    ROS_INFO_STREAM("Vcc = " << vcc << ", a1 = " << a1 << ", a2 = " << a2 << ", b1 = " << b1 << ", b2 = " << b2);
+
     controller = avc::MotorController(vcc, a1, a2, b1, b2);
     controller.turnOn();
     joy_sub_ = nh_.subscribe<sensor_msgs::Joy>("joy", 10, &MotorDriveNode::joyCallback, this);

@@ -15,8 +15,6 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-# add_subdirectory(../third_party/yaml-cpp third_party)
-
 add_library(imu src/imu_capture.cpp)
 find_library(WIRINGPI_LIBRARIES NAMES wiringPi)
 target_link_libraries(imu ${WIRINGPI_LIBRARIES})

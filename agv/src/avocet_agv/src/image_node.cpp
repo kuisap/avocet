@@ -34,6 +34,7 @@ int main(int argc, char** argv)
       fps = config["fps"].as<float>();
     }
 
+
     if (config["publishTopic"]) {
       publishTopic = config["publishTopic"].as<std::string>();
     }
