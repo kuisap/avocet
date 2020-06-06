@@ -1,14 +1,12 @@
 #include <imu_capture.h>
 
 #include <bitset>
+#include <chrono>
 #include <iostream>
 #include <map>
 #include <stdexcept>
 #include <tuple>
 #include <utility>
-#include <chrono>
-
-#define INFO(x) std::cout << x << std::endl;
 
 namespace avc {
 
@@ -32,16 +30,16 @@ enum class GyroResolution : int {
 };
 
 std::map<AccResolution, float> accResolution = {
-    {AccResolution::G2, 0.98F * 1e-3 * gravity},
-    {AccResolution::G4, 1.95F * 1e-3 * gravity},
-    {AccResolution::G8, 3.91F * 1e-3 * gravity},
-    {AccResolution::G16, 7.81F * 1e-3 * gravity},
+  {AccResolution::G2, 0.98F * 1e-3 * gravity},
+  {AccResolution::G4, 1.95F * 1e-3 * gravity},
+  {AccResolution::G8, 3.91F * 1e-3 * gravity},
+  {AccResolution::G16, 7.81F * 1e-3 * gravity},
 };
 
 std::map<GyroResolution, float> gyroResolution = {
-    {GyroResolution::A2000, 61.F * 1e-3}, {GyroResolution::A1000, 30.5F * 1e-3},
-    {GyroResolution::A500, 15.3F * 1e-3}, {GyroResolution::A250, 7.6F * 1e-3},
-    {GyroResolution::A125, 3.8F * 1e-3},
+  {GyroResolution::A2000, 61.F * 1e-3}, {GyroResolution::A1000, 30.5F * 1e-3},
+  {GyroResolution::A500, 15.3F * 1e-3}, {GyroResolution::A250, 7.6F * 1e-3},
+  {GyroResolution::A125, 3.8F * 1e-3},
 };
 
 struct Addresses {
@@ -146,7 +144,7 @@ public:
   bool validate() const {
     {
       const auto accChipId =
-          wiringPiI2CReadReg8(accFd_, addresses.accSubAddress.chipId);
+        wiringPiI2CReadReg8(accFd_, addresses.accSubAddress.chipId);
       if (accChipId != validationData.accData.chipSet) {
         throw std::runtime_error("Acceralater chip set is invalid.");
       }
@@ -154,7 +152,7 @@ public:
 
     {
       const auto gyroChipId =
-          wiringPiI2CReadReg8(gyroFd_, addresses.gyroSubAddress.chipId);
+        wiringPiI2CReadReg8(gyroFd_, addresses.gyroSubAddress.chipId);
       if (gyroChipId != validationData.gyroData.chipSet) {
         throw std::runtime_error("Gyro chip set is invalid.");
       }
@@ -170,33 +168,33 @@ public:
       data.accIsNew = true;
       {
         const auto accXLSB =
-            wiringPiI2CReadReg8(accFd_, addresses.accSubAddress.accXLSB);
+          wiringPiI2CReadReg8(accFd_, addresses.accSubAddress.accXLSB);
         const auto accXMSB =
-            wiringPiI2CReadReg8(accFd_, addresses.accSubAddress.accXMSB);
+          wiringPiI2CReadReg8(accFd_, addresses.accSubAddress.accXMSB);
         const auto [isNewData, accX] =
-            parseAcc(accXLSB, accXMSB, accResolution[accResolution_]);
+          parseAcc(accXLSB, accXMSB, accResolution[accResolution_]);
         data.accX = accX;
         data.accIsNew &= isNewData;
       }
 
       {
         const auto accYLSB =
-            wiringPiI2CReadReg8(accFd_, addresses.accSubAddress.accYLSB);
+          wiringPiI2CReadReg8(accFd_, addresses.accSubAddress.accYLSB);
         const auto accYMSB =
-            wiringPiI2CReadReg8(accFd_, addresses.accSubAddress.accYMSB);
+          wiringPiI2CReadReg8(accFd_, addresses.accSubAddress.accYMSB);
         const auto [isNewData, accY] =
-            parseAcc(accYLSB, accYMSB, accResolution[accResolution_]);
+          parseAcc(accYLSB, accYMSB, accResolution[accResolution_]);
         data.accY = accY;
         data.accIsNew &= isNewData;
       }
 
       {
         const auto accZLSB =
-            wiringPiI2CReadReg8(accFd_, addresses.accSubAddress.accZLSB);
+          wiringPiI2CReadReg8(accFd_, addresses.accSubAddress.accZLSB);
         const auto accZMSB =
-            wiringPiI2CReadReg8(accFd_, addresses.accSubAddress.accZMSB);
+          wiringPiI2CReadReg8(accFd_, addresses.accSubAddress.accZMSB);
         const auto [isNewData, accZ] =
-            parseAcc(accZLSB, accZMSB, accResolution[accResolution_]);
+          parseAcc(accZLSB, accZMSB, accResolution[accResolution_]);
         data.accZ = accZ;
         data.accIsNew &= isNewData;
       }
@@ -205,29 +203,29 @@ public:
     {
       {
         const auto gyroXLSB =
-            wiringPiI2CReadReg8(gyroFd_, addresses.gyroSubAddress.gyroXLSB);
+          wiringPiI2CReadReg8(gyroFd_, addresses.gyroSubAddress.gyroXLSB);
         const auto gyroXMSB =
-            wiringPiI2CReadReg8(gyroFd_, addresses.gyroSubAddress.gyroXMSB);
-        data.gyroX =
-            std::move(parseGyro(gyroXLSB, gyroXMSB, gyroResolution[gyroResolution_]));
+          wiringPiI2CReadReg8(gyroFd_, addresses.gyroSubAddress.gyroXMSB);
+        data.gyroX = std::move(
+          parseGyro(gyroXLSB, gyroXMSB, gyroResolution[gyroResolution_]));
       }
 
       {
         const auto gyroYLSB =
-            wiringPiI2CReadReg8(gyroFd_, addresses.gyroSubAddress.gyroYLSB);
+          wiringPiI2CReadReg8(gyroFd_, addresses.gyroSubAddress.gyroYLSB);
         const auto gyroYMSB =
-            wiringPiI2CReadReg8(gyroFd_, addresses.gyroSubAddress.gyroYMSB);
-        data.gyroY =
-            std::move(parseGyro(gyroYLSB, gyroYMSB, gyroResolution[gyroResolution_]));
+          wiringPiI2CReadReg8(gyroFd_, addresses.gyroSubAddress.gyroYMSB);
+        data.gyroY = std::move(
+          parseGyro(gyroYLSB, gyroYMSB, gyroResolution[gyroResolution_]));
       }
 
       {
         const auto gyroZLSB =
-            wiringPiI2CReadReg8(gyroFd_, addresses.gyroSubAddress.gyroZLSB);
+          wiringPiI2CReadReg8(gyroFd_, addresses.gyroSubAddress.gyroZLSB);
         const auto gyroZMSB =
-            wiringPiI2CReadReg8(gyroFd_, addresses.gyroSubAddress.gyroZMSB);
-        data.gyroZ =
-            std::move(parseGyro(gyroZLSB, gyroZMSB, gyroResolution[gyroResolution_]));
+          wiringPiI2CReadReg8(gyroFd_, addresses.gyroSubAddress.gyroZMSB);
+        data.gyroZ = std::move(
+          parseGyro(gyroZLSB, gyroZMSB, gyroResolution[gyroResolution_]));
       }
     }
 
@@ -244,11 +242,15 @@ private:
 };
 
 IMUCapture::IMUCapture()
-    : impl_(std::move(std::make_unique<IMUCaptureImpl>())) {}
+  : impl_(std::move(std::make_unique<IMUCaptureImpl>())) {}
 
 IMUCapture::~IMUCapture() {}
 
-bool IMUCapture::isEnable() const { return impl_->isEnable(); }
+bool IMUCapture::isEnable() const {
+  return impl_->isEnable();
+}
 
-IMUData IMUCapture::sample() const { return impl_->sample(); }
+IMUData IMUCapture::sample() const {
+  return impl_->sample();
+}
 } // namespace avc

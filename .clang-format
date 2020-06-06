@@ -6,7 +6,7 @@ AlignEscapedNewlinesLeft: true
 AlignTrailingComments: true
 AllowShortCaseLabelsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: 'Inline'
-AllowShortIfStatementsOnASingleLine: false
+AllowShortIfStatementsOnASingleLine: true
 AllowShortLoopsOnASingleLine: false
 AlwaysBreakAfterDefinitionReturnType: false
 AlwaysBreakBeforeMultilineStrings: true
@@ -14,7 +14,7 @@ AlwaysBreakTemplateDeclarations: true
 BinPackArguments: true
 BinPackParameters: true
 BreakBeforeBinaryOperators: 'None'
-BreakBeforeBraces: 'Allman'
+BreakBeforeBraces: 'Attach'
 BreakConstructorInitializersBeforeComma: true
 ColumnLimit: 80
 ConstructorInitializerAllOnOneLineOrOnePerLine: true

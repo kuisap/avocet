@@ -1,11 +1,11 @@
+#include <imu_capture.h>
 #include <ros/ros.h>
 #include <sensor_msgs/Imu.h>
+#include <yaml-cpp/yaml.h>
+
+#include <chrono>
 #include <string>
 #include <vector>
-#include <chrono>
-
-#include <yaml-cpp/yaml.h>
-#include <imu_capture.h>
 
 namespace {
 void showIMU(const avc::IMUData &data) {
@@ -69,7 +69,7 @@ int main(int argc, char **argv) {
     }
 
     msg.angular_velocity_covariance[0] = msg.angular_velocity_covariance[4] =
-        msg.angular_velocity_covariance[8] = 1;
+      msg.angular_velocity_covariance[8] = 1;
 
     msg.linear_acceleration.x = std::move(data.accX);
     msg.linear_acceleration.y = std::move(data.accY);
@@ -78,8 +78,8 @@ int main(int argc, char **argv) {
       msg.linear_acceleration_covariance[i] = 0;
     }
     msg.linear_acceleration_covariance[0] =
-        msg.linear_acceleration_covariance[4] =
-            msg.linear_acceleration_covariance[8] = 1;
+      msg.linear_acceleration_covariance[4] =
+        msg.linear_acceleration_covariance[8] = 1;
 
     pub.publish(std::move(msg));
 

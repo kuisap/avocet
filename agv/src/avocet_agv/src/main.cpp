@@ -1,14 +1,13 @@
-#include <ros/ros.h>
-#include <image_transport/image_transport.h>
-#include <opencv2/highgui/highgui.hpp>
 #include <cv_bridge/cv_bridge.h>
+#include <image_transport/image_transport.h>
+#include <ros/ros.h>
 #include <yaml-cpp/yaml.h>
 
-#include <vector>
+#include <opencv2/highgui/highgui.hpp>
 #include <string>
+#include <vector>
 
-
-int main(int argc, char** argv){
+int main(int argc, char** argv) {
   // image_node
   {
     int width = 300, height = 300;
@@ -34,7 +33,6 @@ int main(int argc, char** argv){
         fps = config["image"]["fps"].as<float>();
       }
 
-
       if (config["image"]["publishTopic"]) {
         publishTopic = config["image"]["publishTopic"].as<std::string>();
       }
@@ -43,7 +41,7 @@ int main(int argc, char** argv){
     image_transport::ImageTransport it(nh);
     image_transport::Publisher pub = it.advertise(publishTopic, 1);
     cv::VideoCapture cap(0);
-    if(!cap.isOpened()){
+    if (!cap.isOpened()) {
       ROS_ERROR_STREAM("Camera could not be opened.");
       return 1;
     }
@@ -55,13 +53,16 @@ int main(int argc, char** argv){
     sensor_msgs::ImagePtr msg;
 
     ros::Rate loop_rate(fps);
-    ROS_INFO_STREAM("WIDTH = " << cap.get(cv::CAP_PROP_FRAME_WIDTH) << ", HEIGHT = " <<  cap.get(cv::CAP_PROP_FRAME_HEIGHT) << ", FPS = " << cap.get(cv::CAP_PROP_FPS) << ", publish topic = " << publishTopic);
+    ROS_INFO_STREAM("WIDTH = " << cap.get(cv::CAP_PROP_FRAME_WIDTH)
+                               << ", HEIGHT = "
+                               << cap.get(cv::CAP_PROP_FRAME_HEIGHT)
+                               << ", FPS = " << cap.get(cv::CAP_PROP_FPS)
+                               << ", publish topic = " << publishTopic);
   }
-
 
   while (nh.ok()) {
     cap >> frame;
-    if(!frame.empty()) {
+    if (!frame.empty()) {
       auto header = std_msgs::Header();
       header.stamp = ros::Time::now();
       ROS_INFO_STREAM("Time " << header.stamp);
