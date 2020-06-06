@@ -2,23 +2,42 @@
 #include <image_transport/image_transport.h>
 #include <opencv2/highgui/highgui.hpp>
 #include <cv_bridge/cv_bridge.h>
+#include <yaml-cpp/yaml.h>
+
 #include <vector>
 #include <string>
+
 
 int main(int argc, char** argv)
 {
   int width = 300, height = 300;
   float fps = 30;
   std::string publishTopic = "camera/image";
+  std::string config_str = "./src/avocet_agv/config/config.yaml";
 
 
   ros::init(argc, argv, "image_publisher");
   ros::NodeHandle nh("~");
-  nh.getParam("width", width);
-  nh.getParam("height", height);
-  nh.getParam("fps", fps);
-  nh.getParam("publish_topic", publishTopic);
+  nh.getParam("config", config_str);
 
+  {
+    YAML::Node config = YAML::LoadFile(config_str);
+    if (config["width"]) {
+      width = config["width"].as<int>();
+    }
+
+    if (config["height"]) {
+      height = config["height"].as<int>();
+    }
+
+    if (config["fps"]) {
+      fps = config["fps"].as<float>();
+    }
+
+    if (config["publishTopic"]) {
+      publishTopic = config["publishTopic"].as<std::string>();
+    }
+  }
 
   image_transport::ImageTransport it(nh);
   image_transport::Publisher pub = it.advertise(publishTopic, 1);
