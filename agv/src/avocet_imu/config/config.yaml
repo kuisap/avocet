@@ -1,0 +1,3 @@
+fps: 100
+publishTopic: "/imu"
+frame_id: "base_link"
