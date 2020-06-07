@@ -26,6 +26,7 @@ add_subdirectory(../third_party/yaml-cpp third_party)
 add_executable(${PROJECT_NAME}_node src/main.cpp)
 
 if (BUILD_IMU)
+  target_compile_definitions(${PROJECT_NAME}_node PUBLIC USE_IMU)
   add_library(imu src/imu_capture.cpp)
   find_library(WIRINGPI_LIBRARIES NAMES wiringPi)
   target_link_libraries(imu ${WIRINGPI_LIBRARIES})

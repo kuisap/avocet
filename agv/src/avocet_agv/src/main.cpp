@@ -1,9 +1,6 @@
-#include <cv_bridge/cv_bridge.h>
-#include <image_transport/image_transport.h>
-#include <ros/ros.h>
+#include <image_capture.h>
 #include <yaml-cpp/yaml.h>
 
-#include <opencv2/highgui/highgui.hpp>
 #include <string>
 #include <vector>
 
@@ -34,36 +31,12 @@ int main(int argc, char** argv) {
     publishTopic = config["image"]["publishTopic"].as<std::string>();
   }
 
-  image_transport::ImageTransport it(nh);
-  image_transport::Publisher pub = it.advertise(publishTopic, 1);
-  cv::VideoCapture cap(0);
-  if (!cap.isOpened()) {
-    ROS_ERROR_STREAM("Camera could not be opened.");
-    return 1;
-  }
-  cap.set(cv::CAP_PROP_FRAME_WIDTH, width);
-  cap.set(cv::CAP_PROP_FRAME_HEIGHT, height);
-  cap.set(cv::CAP_PROP_FPS, fps);
-
-  cv::Mat frame;
-  sensor_msgs::ImagePtr msg;
+  avc::ImageCapture icap(nh, 0, width, height, fps, publishTopic);
 
   ros::Rate loop_rate(fps);
-  ROS_INFO_STREAM("WIDTH = " << cap.get(cv::CAP_PROP_FRAME_WIDTH)
-                             << ", HEIGHT = "
-                             << cap.get(cv::CAP_PROP_FRAME_HEIGHT)
-                             << ", FPS = " << cap.get(cv::CAP_PROP_FPS)
-                             << ", publish topic = " << publishTopic);
 
   while (nh.ok()) {
-    cap >> frame;
-    if (!frame.empty()) {
-      auto header = std_msgs::Header();
-      header.stamp = ros::Time::now();
-      ROS_INFO_STREAM("Time " << header.stamp);
-      auto msg = cv_bridge::CvImage(header, "bgr8", frame).toImageMsg();
-      pub.publish(std::move(msg));
-    }
+    icap.publish();
     ros::spinOnce();
     loop_rate.sleep();
   }
